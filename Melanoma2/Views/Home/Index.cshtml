@@ -1,6 +1,21 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
+
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyC8KloedMvZLdSqUMk74oE7IM0SF9bJCrw",
+    authDomain: "idermatoscope.firebaseapp.com",
+    databaseURL: "https://idermatoscope.firebaseio.com",
+    projectId: "idermatoscope",
+    storageBucket: "idermatoscope.appspot.com",
+    messagingSenderId: "960111575797"
+  };
+  firebase.initializeApp(config);
+</script>
 <script>
     // Get a reference to the storage service, which is used to create references in your storage bucket
     var storage = firebase.storage();
@@ -16,8 +31,6 @@
     // Or inserted into an <img> element:
     var img = document.getElementById('myimg');
     img.src = url;
-
-
 </script>
 
 <div class="row">
