@@ -1,13 +1,29 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<script>
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+
+    // Create a storage reference from our storage service
+    var storageRef = storage.ref();
+
+    // Child references can also take paths delimited by '/'
+    var imgRef = storageRef.child('Raw Images/RAW_2017_11_29_00_15_54_260.dng');
+    // spaceRef now points to "images/space.jpg"
+    // imagesRef still points to "images"
+
+    // Or inserted into an <img> element:
+    var img = document.getElementById('myimg');
+    img.src = url;
 
 
+</script>
 
 <div class="row">
     <h4>Welcome to your user homepage!</h4>
     <p>Below will be the ability to view and interact with images uploaded via the mobile application.</p>
-    <img src="" alt="" />
+    <img src="#" id="myimg"/>
 </div>
 
 <div class="row">
