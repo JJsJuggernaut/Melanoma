@@ -26,5 +26,5 @@ textarea {
 #backgroundimg{
     position: absolute;
     left: 500px;
-
+    z-index: -1000;
 }
