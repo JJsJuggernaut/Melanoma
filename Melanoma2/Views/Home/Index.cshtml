@@ -17,16 +17,27 @@
   firebase.initializeApp(config);
 </script>
 <script>
-    // Get a reference to the storage service, which is used to create references in your storage bucket
-    var storage = firebase.storage();
+    //// Get a reference to the storage service, which is used to create references in your storage bucket
+    //var storage = firebase.storage();
 
-    // Create a storage reference from our storage service
-    var storageRef = storage.ref();
+    //// Create a storage reference from our storage service
+    //var storageRef = storage.ref();
+
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+
+    // Create a reference to 'mountains.jpg'
+    var mountainsRef = storageRef.child('mountains.jpg');
 
     // Child references can also take paths delimited by '/'
-    var imgRef = storageRef.child('Raw Images/RAW_2017_11_29_00_15_54_260.dng');
+    var imgRef = storageRef.child('Raw Images/josiahTestImg.jpg');
     // spaceRef now points to "images/space.jpg"
     // imagesRef still points to "images"
+
+    var file = ... // use the Blob or File API
+ref.put(file).then(function(snapshot) {
+  console.log('Uploaded a blob or file!');
+    });
 
     // Or inserted into an <img> element:
     var img = document.getElementById('myimg');

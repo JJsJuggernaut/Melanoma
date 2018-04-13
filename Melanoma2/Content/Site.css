@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#backgroundimg{
+    position: absolute;
+    left: 500px;
+
+}
