@@ -16,7 +16,7 @@
   };
   firebase.initializeApp(config);
 </script>
-<script>
+<script type="text/javascript">
     //// Get a reference to the storage service, which is used to create references in your storage bucket
     //var storage = firebase.storage();
 
@@ -44,12 +44,51 @@ ref.put(file).then(function(snapshot) {
     img.src = url;
 </script>
 
-<div class="row">
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#Button1').click(function() {
+            var button1 = document.getElementById("Button1");
+            button1.onclick = function(){
+                var img = document.getElementById('myimg');
+                img.src = "~/Images/" + button1.textContent;
+            }
+        });
+        $('#Button2').click(function() {
+            var button2 = document.getElementById("Button2");
+            button2.onclick = function(){
+                var img = document.getElementById('myimg');
+                img.src = "~/Images/" + button2.value;
+            }
+        });
+        $('#Button3').click(function() {
+            var button3 = document.getElementById("Button3");
+            //button3.onclick = function(){
+                var img = document.getElementById('myimg');
+                img.src = "~/Images/" + button3.value;
+            //}
+        });
+    });
+</script>
+
+<div class="row" id="headerRow">
     <h4>Welcome to your user homepage!</h4>
     <p>Below will be the ability to view and interact with images uploaded via the mobile application.</p>
-    <img src="#" id="myimg"/>
+
+    <table style="width:100%;">
+        <tr>
+            <td><button id="Button1" class="link"/><u>test1.jpg</u></td>
+        </tr>
+        <tr>
+            <td><button id="Button2" class="link" /><u>test2.jpg</u></td>
+        </tr>
+        <tr>
+            <td><button id="Button3" class="link" /><u>test3.jpg</u></td>
+        </tr>
+    </table>
+
 </div>
 
-<div class="row">
-
+<div class="row" id="imgRow">
+@*    <iframe id="myimg" src=""></iframe>*@
+    <img src="#" alt="" id="myimg" />
 </div>

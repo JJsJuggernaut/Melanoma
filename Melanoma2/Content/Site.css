@@ -28,3 +28,22 @@ textarea {
     left: 500px;
     z-index: -1000;
 }
+
+#myimg{
+
+}
+
+#imgRow{
+    display: inline-block;
+    width: 50%;
+}
+
+#headerRow{
+    display: inline-block;
+    width: 50%;
+}
+
+button.link{
+     background:none;
+     border:none;
+}
