@@ -30,20 +30,43 @@ textarea {
 }
 
 #myimg{
-
+  max-width:50%;
+  height:auto;
+  text-align: center;
 }
 
 #imgRow{
+    position:relative;
     display: inline-block;
     width: 50%;
+    vertical-align: top;
+    margin-top: 5%;
 }
 
 #headerRow{
+    position:relative;
     display: inline-block;
     width: 50%;
+    vertical-align: top;
 }
 
-button.link{
+.link{
      background:none;
-     border:none;
+     border: none;
+     text-decoration: underline;
+     text-underline-position:below
+}
+
+.link:hover{
+    color: #0094ff;
+}
+
+#coverbackgroundimg{
+    position:absolute;
+    display:inline-block;
+    vertical-align: top;
+    z-index:-999;
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }

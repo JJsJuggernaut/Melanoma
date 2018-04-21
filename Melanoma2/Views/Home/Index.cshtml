@@ -15,8 +15,80 @@
     messagingSenderId: "960111575797"
   };
   firebase.initializeApp(config);
+
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+    var img1 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Arm_2018_04_16_23_54_13_792.jpg');
+    var img2 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_53_08_766.jpg');
+    var img3 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_54_50_587.jpg');
+
+
+    function changeimg(){
+
+        img1.getDownloadURL().then(function (url) {
+
+            var img = document.getElementById('myimg');
+            img.src = url;
+
+        }).catch(function (error) {
+            console.error(error);
+        });
+
+    }
+
+    function changeimg2() {
+
+        img2.getDownloadURL().then(function (url) {
+
+            var img = document.getElementById('myimg');
+            img.src = url;
+
+        }).catch(function (error) {
+            console.error(error);
+        });
+
+    }
+
+    function changeimg3() {
+
+        img3.getDownloadURL().then(function (url) {
+
+            var img = document.getElementById('myimg');
+            img.src = url;
+
+        }).catch(function (error) {
+            console.error(error);
+        });
+
+    }
+
+
+
+    //$(document).ready(function () {
+    //    $('#Button1').click(function () {
+    //        var button1 = document.getElementById("Button1");
+    //        button1.onclick = function () {
+    //            var img = document.getElementById('myimg');
+    //            img.src = "~/Images/" + button1.textContent;
+    //        }
+    //    });
+    //    $('#Button2').click(function () {
+    //        var button2 = document.getElementById("Button2");
+    //        button2.onclick = function () {
+    //            var img = document.getElementById('myimg');
+    //            img.src = "~/Images/" + button2.value;
+    //        }
+    //    });
+    //    $('#Button3').click(function () {
+    //        var button3 = document.getElementById("Button3");
+    //        //button3.onclick = function(){
+    //        var img = document.getElementById('myimg');
+    //        img.src = "~/Images/" + button3.value;
+    //        //}
+    //    });
+    //});
 </script>
-<script type="text/javascript">
+@*<script type="text/javascript">
     //// Get a reference to the storage service, which is used to create references in your storage bucket
     //var storage = firebase.storage();
 
@@ -42,47 +114,23 @@ ref.put(file).then(function(snapshot) {
     // Or inserted into an <img> element:
     var img = document.getElementById('myimg');
     img.src = url;
-</script>
+</script>*@
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#Button1').click(function() {
-            var button1 = document.getElementById("Button1");
-            button1.onclick = function(){
-                var img = document.getElementById('myimg');
-                img.src = "~/Images/" + button1.textContent;
-            }
-        });
-        $('#Button2').click(function() {
-            var button2 = document.getElementById("Button2");
-            button2.onclick = function(){
-                var img = document.getElementById('myimg');
-                img.src = "~/Images/" + button2.value;
-            }
-        });
-        $('#Button3').click(function() {
-            var button3 = document.getElementById("Button3");
-            //button3.onclick = function(){
-                var img = document.getElementById('myimg');
-                img.src = "~/Images/" + button3.value;
-            //}
-        });
-    });
-</script>
+<div id="coverbackgroundimg"></div>
 
 <div class="row" id="headerRow">
     <h4>Welcome to your user homepage!</h4>
-    <p>Below will be the ability to view and interact with images uploaded via the mobile application.</p>
+    <p>Select an image below to view.</p>
 
     <table style="width:100%;">
         <tr>
-            <td><button id="Button1" class="link"/><u>test1.jpg</u></td>
+            <td><input id="Button1" type="button" value="Left Arm_2018_04_16" onclick="changeimg()" class="link"/></td>
         </tr>
         <tr>
-            <td><button id="Button2" class="link" /><u>test2.jpg</u></td>
+            <td><input id="Button2" type="button" value="Left Hand_2018_04_16" onclick="changeimg2()" class="link"/></td>
         </tr>
         <tr>
-            <td><button id="Button3" class="link" /><u>test3.jpg</u></td>
+            <td><input id="Button3" type="button" value="Left Hand_2018_04_16" onclick="changeimg3()" class="link"/></td>
         </tr>
     </table>
 
@@ -90,5 +138,6 @@ ref.put(file).then(function(snapshot) {
 
 <div class="row" id="imgRow">
 @*    <iframe id="myimg" src=""></iframe>*@
-    <img src="#" alt="" id="myimg" />
+    <img alt="" id="myimg" />
 </div>
+
