@@ -5,139 +5,203 @@
 
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 <script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyC8KloedMvZLdSqUMk74oE7IM0SF9bJCrw",
-    authDomain: "idermatoscope.firebaseapp.com",
-    databaseURL: "https://idermatoscope.firebaseio.com",
-    projectId: "idermatoscope",
-    storageBucket: "idermatoscope.appspot.com",
-    messagingSenderId: "960111575797"
-  };
-  firebase.initializeApp(config);
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyC8KloedMvZLdSqUMk74oE7IM0SF9bJCrw",
+        authDomain: "idermatoscope.firebaseapp.com",
+        databaseURL: "https://idermatoscope.firebaseio.com",
+        projectId: "idermatoscope",
+        storageBucket: "idermatoscope.appspot.com",
+        messagingSenderId: "960111575797"
+    };
+    firebase.initializeApp(config);
+
+    var userEmail;
+
+    //initApp = function () {
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var displayName = user.displayName;
+                var email = user.email;
+                userEmail = user.email;
+                var emailVerified = user.emailVerified;
+                var photoURL = user.photoURL;
+                var uid = user.uid;
+                var phoneNumber = user.phoneNumber;
+                var providerData = user.providerData;
+                user.getIdToken().then(function (accessToken) {
+                    document.getElementById('sign-in-status').textContent = 'Signed in';
+                    document.getElementById('sign-in').textContent = 'Sign out';
+                    document.getElementById('account-details').textContent = JSON.stringify({
+                        displayName: displayName,
+                        email: email,
+                        emailVerified: emailVerified,
+                        phoneNumber: phoneNumber,
+                        photoURL: photoURL,
+                        uid: uid,
+                        accessToken: accessToken,
+                        providerData: providerData
+                    }, null, '  ');
+                });
+            } else {
+                // User is signed out.
+                document.getElementById('sign-in-status').textContent = 'Signed out';
+                document.getElementById('sign-in').textContent = 'Sign in';
+                document.getElementById('account-details').textContent = 'null';
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    //};
+
+    //window.addEventListener('load', function () {
+    //    initApp();
+    //});
+
+
+
 
     var storage = firebase.storage();
+    var database = firebase.database();
     var storageRef = storage.ref();
-    var img1 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Arm_2018_04_16_23_54_13_792.jpg');
-    var img2 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_53_08_766.jpg');
-    var img3 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_54_50_587.jpg');
+    var databaseRef = database.ref();
+
+    //Previous hardcoded test images
+    //var img1 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Arm_2018_04_16_23_54_13_792.jpg');
+    //var img2 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_53_08_766.jpg');
+    //var img3 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_54_50_587.jpg');
+    //var user = 'melanomaapptest@gmail,com';
+      
+    setTimeout(function () {
+        //your code here
+
+    userEmail = userEmail.replace('.', ',');
 
 
-    function changeimg(){
+    if (userEmail == 'melanomaapptestad@gmail,com') {
 
-        img1.getDownloadURL().then(function (url) {
+        //var userID = firebase.auth().currentUser.email;
+        var userNum = databaseRef.child('Users').once("value", function (snapshot) {
 
-            var img = document.getElementById('myimg');
-            img.src = url;
+            snapshot.forEach(function (childSnapshot) {
+                // key will be "fred" the first time and "barney" the second time
+                //var key = childSnapshot.key();
 
-        }).catch(function (error) {
-            console.error(error);
+                // childData will be the actual contents of the child
+                //var childData = childSnapshot.val();
+
+
+
+                console.log('Count: ' + childSnapshot.key);
+            });
+
+        });
+
+
+
+    }
+    else {
+        //var userID = firebase.auth().currentUser.email;
+        var count = 0;
+        databaseRef.child('Users/' + userEmail).once("value", function (snapshot) {
+            //console.log('Count: ' + snapshot.key);
+            snapshot.forEach(function (childSnapshot) {
+
+                // key is picture name
+                var key = childSnapshot.key;
+                //url is download url
+                var url = childSnapshot.child('/JPEG').val();
+
+                var table = document.getElementById("myTable");
+                //// Create an empty <tr> element and add it to the 1st position of the table:
+                var row = table.insertRow(0);
+                //// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                var cell = row.insertCell(0);
+
+                var button = document.createElement('input');
+                button.setAttribute('id', 'button' + count);
+                button.type = 'button';
+
+                //logic to change string formatting.
+                if (key.charAt() == '_') {
+                    var name = key.replace(key.charAt(), '');
+                    name = name.replace('_', ' ');
+                    name = name.replace(/_/g, '/');
+                    var x;
+                    var sizeOp = name.length;
+                    var counter = 0;
+                    for (x = 0; x < sizeOp; x++) {
+                        if (name.charAt(x) == '/') {
+                            counter++;
+                        }
+                        if (counter == 3) {
+                            name = name.substring(0, x);
+                            break;
+                        }
+                    }
+                }
+                else {
+                    var name = name.replace('_', ' ');
+                    name = name.replace(/_/g, '/');
+                    var x;
+                    var sizeOp = name.length;
+                    var counter = 0;
+                    for (x = 0; x < sizeOp; x++) {
+                        if (name.charAt(x) == '/') {
+                            counter++;
+                        }
+                        if (counter == 3) {
+                            name = name.substring(0, x);
+                            break;
+                        }
+                    }
+                }
+
+                button.value = name;
+                button.className = 'link';
+                button.addEventListener('click', function () {
+                    changeimg(url);
+                });
+
+                cell.appendChild(button);
+                count++;
+
+                //debug
+                //console.log(url);
+                //console.log('Count: ' + key);
+            });
+
         });
 
     }
 
-    function changeimg2() {
+    }, 1000);
 
-        img2.getDownloadURL().then(function (url) {
-
-            var img = document.getElementById('myimg');
-            img.src = url;
-
-        }).catch(function (error) {
-            console.error(error);
-        });
-
+    function changeimg(url) {
+        var img = document.getElementById('myimg');
+        img.src = url;
     }
 
-    function changeimg3() {
-
-        img3.getDownloadURL().then(function (url) {
-
-            var img = document.getElementById('myimg');
-            img.src = url;
-
-        }).catch(function (error) {
-            console.error(error);
-        });
-
-    }
-
-
-
-    //$(document).ready(function () {
-    //    $('#Button1').click(function () {
-    //        var button1 = document.getElementById("Button1");
-    //        button1.onclick = function () {
-    //            var img = document.getElementById('myimg');
-    //            img.src = "~/Images/" + button1.textContent;
-    //        }
-    //    });
-    //    $('#Button2').click(function () {
-    //        var button2 = document.getElementById("Button2");
-    //        button2.onclick = function () {
-    //            var img = document.getElementById('myimg');
-    //            img.src = "~/Images/" + button2.value;
-    //        }
-    //    });
-    //    $('#Button3').click(function () {
-    //        var button3 = document.getElementById("Button3");
-    //        //button3.onclick = function(){
-    //        var img = document.getElementById('myimg');
-    //        img.src = "~/Images/" + button3.value;
-    //        //}
-    //    });
-    //});
 </script>
-@*<script type="text/javascript">
-    //// Get a reference to the storage service, which is used to create references in your storage bucket
-    //var storage = firebase.storage();
-
-    //// Create a storage reference from our storage service
-    //var storageRef = storage.ref();
-
-    // Create a root reference
-    var storageRef = firebase.storage().ref();
-
-    // Create a reference to 'mountains.jpg'
-    var mountainsRef = storageRef.child('mountains.jpg');
-
-    // Child references can also take paths delimited by '/'
-    var imgRef = storageRef.child('Raw Images/josiahTestImg.jpg');
-    // spaceRef now points to "images/space.jpg"
-    // imagesRef still points to "images"
-
-    var file = ... // use the Blob or File API
-ref.put(file).then(function(snapshot) {
-  console.log('Uploaded a blob or file!');
-    });
-
-    // Or inserted into an <img> element:
-    var img = document.getElementById('myimg');
-    img.src = url;
-</script>*@
 
 <div id="coverbackgroundimg"></div>
 
 <div class="row" id="headerRow">
     <h4>Welcome to your user homepage!</h4>
     <p>Select an image below to view.</p>
-
-    <table style="width:100%;">
-        <tr>
-            <td><input id="Button1" type="button" value="Left Arm_2018_04_16" onclick="changeimg()" class="link"/></td>
-        </tr>
-        <tr>
-            <td><input id="Button2" type="button" value="Left Hand_2018_04_16" onclick="changeimg2()" class="link"/></td>
-        </tr>
-        <tr>
-            <td><input id="Button3" type="button" value="Left Hand_2018_04_16" onclick="changeimg3()" class="link"/></td>
-        </tr>
+    <table style="width:100%;" id="myTable">
+        @*Old test case: <tr><td><input id="Button1" type="button" value="Left Arm_2018_04_16" onclick="changeimg()" class="link"/></td></tr>*@
     </table>
+
+    <div id="sign-in-status" hidden="hidden"></div>
+    <div id="sign-in" hidden="hidden"></div>
+    <div id="account-details" hidden="hidden"></div>
 
 </div>
 
 <div class="row" id="imgRow">
-@*    <iframe id="myimg" src=""></iframe>*@
+    @*    <iframe id="myimg" src=""></iframe>*@
     <img alt="" id="myimg" />
 </div>
 
