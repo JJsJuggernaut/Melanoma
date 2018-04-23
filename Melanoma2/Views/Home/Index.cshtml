@@ -19,40 +19,40 @@
     var userEmail;
 
     //initApp = function () {
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // User is signed in.
-                var displayName = user.displayName;
-                var email = user.email;
-                userEmail = user.email;
-                var emailVerified = user.emailVerified;
-                var photoURL = user.photoURL;
-                var uid = user.uid;
-                var phoneNumber = user.phoneNumber;
-                var providerData = user.providerData;
-                user.getIdToken().then(function (accessToken) {
-                    document.getElementById('sign-in-status').textContent = 'Signed in';
-                    document.getElementById('sign-in').textContent = 'Sign out';
-                    document.getElementById('account-details').textContent = JSON.stringify({
-                        displayName: displayName,
-                        email: email,
-                        emailVerified: emailVerified,
-                        phoneNumber: phoneNumber,
-                        photoURL: photoURL,
-                        uid: uid,
-                        accessToken: accessToken,
-                        providerData: providerData
-                    }, null, '  ');
-                });
-            } else {
-                // User is signed out.
-                document.getElementById('sign-in-status').textContent = 'Signed out';
-                document.getElementById('sign-in').textContent = 'Sign in';
-                document.getElementById('account-details').textContent = 'null';
-            }
-        }, function (error) {
-            console.log(error);
-        });
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            userEmail = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var phoneNumber = user.phoneNumber;
+            var providerData = user.providerData;
+            user.getIdToken().then(function (accessToken) {
+                document.getElementById('sign-in-status').textContent = 'Signed in';
+                document.getElementById('sign-in').textContent = 'Sign out';
+                document.getElementById('account-details').textContent = JSON.stringify({
+                    displayName: displayName,
+                    email: email,
+                    emailVerified: emailVerified,
+                    phoneNumber: phoneNumber,
+                    photoURL: photoURL,
+                    uid: uid,
+                    accessToken: accessToken,
+                    providerData: providerData
+                }, null, '  ');
+            });
+        } else {
+            // User is signed out.
+            document.getElementById('sign-in-status').textContent = 'Signed out';
+            document.getElementById('sign-in').textContent = 'Sign in';
+            document.getElementById('account-details').textContent = 'null';
+        }
+    }, function (error) {
+        console.log(error);
+    });
     //};
 
     //window.addEventListener('load', function () {
@@ -72,109 +72,201 @@
     //var img2 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_53_08_766.jpg');
     //var img3 = storageRef.child('melanomaapptest@gmail.com/JPEG Images/JPEG_Left Hand_2018_04_16_23_54_50_587.jpg');
     //var user = 'melanomaapptest@gmail,com';
-      
+
     setTimeout(function () {
         //your code here
 
-    userEmail = userEmail.replace('.', ',');
+        userEmail = userEmail.replace('.', ',');
 
 
-    if (userEmail == 'melanomaapptestad@gmail,com') {
+        if (userEmail == 'melanomaapptestad@gmail,com') {
 
-        //var userID = firebase.auth().currentUser.email;
-        var userNum = databaseRef.child('Users').once("value", function (snapshot) {
+            var count = 0;
+            databaseRef.child('Users').once("value", function (snapshot) {
+                console.log('Count: ' + snapshot.key);
+                var colCount = 0;
+                snapshot.forEach(function (childSnapshot) {
+                    // key is a user
+                    var key = childSnapshot.key;
+                    console.log('Count: ' + childSnapshot.key);
+                    var table = document.getElementById("myTable");
+                    //// Create an empty <tr> element and add it to the 1st position of the table:
+                    var row = table.rows[0];
+                    //// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                    var cell = row.insertCell(colCount);
 
-            snapshot.forEach(function (childSnapshot) {
-                // key will be "fred" the first time and "barney" the second time
-                //var key = childSnapshot.key();
+                    key = key.replace(',', '.');
+                    cell.innerHTML = key;
 
-                // childData will be the actual contents of the child
-                //var childData = childSnapshot.val();
+                    var rowCount = 1;
+                    childSnapshot.forEach(function (grandchildSnapshot) {
+                        //data is photo name
+                        var data = grandchildSnapshot.key;
+                        //url is download url
+                        var url = grandchildSnapshot.child('/JPEG').val();
 
+                        if (table.rows[rowCount] != null) {
+                            var row = table.rows[rowCount];
+                            if (row.cells[colCount - 1] != null) {
+                                // Insert new cells (<td> elements) in the correct position of the "new" <tr> element:
+                                var cell = row.insertCell(colCount);
+                            }
+                            else {
+                                // Insert new cells (<td> elements) in the correct position of the "new" <tr> element:
+                                var cellE = row.insertCell(colCount-1);
+                                var cell = row.insertCell(colCount);
+                            }
 
-
-                console.log('Count: ' + childSnapshot.key);
-            });
-
-        });
-
-
-
-    }
-    else {
-        //var userID = firebase.auth().currentUser.email;
-        var count = 0;
-        databaseRef.child('Users/' + userEmail).once("value", function (snapshot) {
-            //console.log('Count: ' + snapshot.key);
-            snapshot.forEach(function (childSnapshot) {
-
-                // key is picture name
-                var key = childSnapshot.key;
-                //url is download url
-                var url = childSnapshot.child('/JPEG').val();
-
-                var table = document.getElementById("myTable");
-                //// Create an empty <tr> element and add it to the 1st position of the table:
-                var row = table.insertRow(0);
-                //// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-                var cell = row.insertCell(0);
-
-                var button = document.createElement('input');
-                button.setAttribute('id', 'button' + count);
-                button.type = 'button';
-
-                //logic to change string formatting.
-                if (key.charAt() == '_') {
-                    var name = key.replace(key.charAt(), '');
-                    name = name.replace('_', ' ');
-                    name = name.replace(/_/g, '/');
-                    var x;
-                    var sizeOp = name.length;
-                    var counter = 0;
-                    for (x = 0; x < sizeOp; x++) {
-                        if (name.charAt(x) == '/') {
-                            counter++;
                         }
-                        if (counter == 3) {
-                            name = name.substring(0, x);
-                            break;
-                        }
-                    }
-                }
-                else {
-                    var name = name.replace('_', ' ');
-                    name = name.replace(/_/g, '/');
-                    var x;
-                    var sizeOp = name.length;
-                    var counter = 0;
-                    for (x = 0; x < sizeOp; x++) {
-                        if (name.charAt(x) == '/') {
-                            counter++;
-                        }
-                        if (counter == 3) {
-                            name = name.substring(0, x);
-                            break;
-                        }
-                    }
-                }
+                        else {
+                            // Insert new table row if there isn't one
+                            var row = table.insertRow(rowCount);
+                            if (row.cells[colCount - 1] != null) {
+                                // Insert new cells (<td> elements) in the correct position of the "new" <tr> element:
+                                var cell = row.insertCell(colCount);
+                            }
+                            else {
+                                // Insert new cells (<td> elements) in the correct position of the "new" <tr> element:
+                                var cellE = row.insertCell(colCount - 1);
+                                var cell = row.insertCell(colCount);
+                            }
 
-                button.value = name;
-                button.className = 'link';
-                button.addEventListener('click', function () {
-                    changeimg(url);
+                        }
+
+
+                        var button = document.createElement('input');
+                        button.setAttribute('id', 'button' + count);
+                        button.type = 'button';
+
+                        //logic to change string formatting.
+                        if (data.charAt() == '_') {
+                            var name = data.replace(data.charAt(), '');
+                            name = name.replace('_', ' ');
+                            name = name.replace(/_/g, '/');
+                            var x;
+                            var sizeOp = name.length;
+                            var counter = 0;
+                            for (x = 0; x < sizeOp; x++) {
+                                if (name.charAt(x) == '/') {
+                                    counter++;
+                                }
+                                if (counter == 3) {
+                                    name = name.substring(0, x);
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            var name = name.replace('_', ' ');
+                            name = name.replace(/_/g, '/');
+                            var x;
+                            var sizeOp = name.length;
+                            var counter = 0;
+                            for (x = 0; x < sizeOp; x++) {
+                                if (name.charAt(x) == '/') {
+                                    counter++;
+                                }
+                                if (counter == 3) {
+                                    name = name.substring(0, x);
+                                    break;
+                                }
+                            }
+                        }
+
+                        button.value = name;
+                        button.className = 'link';
+                        button.addEventListener('click', function () {
+                            changeimg(url);
+                        });
+
+                        cell.appendChild(button);
+                        rowCount++;
+
+                    });
+                    colCount++;
+                    //debug stuff
+                    //console.log('Count: ' + childSnapshot.key);
                 });
 
-                cell.appendChild(button);
-                count++;
-
-                //debug
-                //console.log(url);
-                //console.log('Count: ' + key);
             });
 
-        });
 
-    }
+
+        }
+        else {
+
+            var count = 0;
+            databaseRef.child('Users/' + userEmail).once("value", function (snapshot) {
+                //console.log('Count: ' + snapshot.key);
+                snapshot.forEach(function (childSnapshot) {
+
+                    // key is picture name
+                    var key = childSnapshot.key;
+                    //url is download url
+                    var url = childSnapshot.child('/JPEG').val();
+
+                    var table = document.getElementById("myTable");
+                    // Create an empty <tr> element and add it to the 1st position of the table:
+                    var row = table.insertRow(0);
+                    // Insert new cells (<td> elements) in the correct position of the "new" <tr> element:
+                    var cell = row.insertCell(0);
+
+                    var button = document.createElement('input');
+                    button.setAttribute('id', 'button' + count);
+                    button.type = 'button';
+
+                    //logic to change string formatting.
+                    if (key.charAt() == '_') {
+                        var name = key.replace(key.charAt(), '');
+                        name = name.replace('_', ' ');
+                        name = name.replace(/_/g, '/');
+                        var x;
+                        var sizeOp = name.length;
+                        var counter = 0;
+                        for (x = 0; x < sizeOp; x++) {
+                            if (name.charAt(x) == '/') {
+                                counter++;
+                            }
+                            if (counter == 3) {
+                                name = name.substring(0, x);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        var name = name.replace('_', ' ');
+                        name = name.replace(/_/g, '/');
+                        var x;
+                        var sizeOp = name.length;
+                        var counter = 0;
+                        for (x = 0; x < sizeOp; x++) {
+                            if (name.charAt(x) == '/') {
+                                counter++;
+                            }
+                            if (counter == 3) {
+                                name = name.substring(0, x);
+                                break;
+                            }
+                        }
+                    }
+
+                    button.value = name;
+                    button.className = 'link';
+                    button.addEventListener('click', function () {
+                        changeimg(url);
+                    });
+
+                    cell.appendChild(button);
+                    count++;
+
+                    //debug
+                    //console.log(url);
+                    //console.log('Count: ' + key);
+                });
+
+            });
+
+        }
 
     }, 1000);
 
@@ -191,6 +283,7 @@
     <h4>Welcome to your user homepage!</h4>
     <p>Select an image below to view.</p>
     <table style="width:100%;" id="myTable">
+        <tr></tr>
         @*Old test case: <tr><td><input id="Button1" type="button" value="Left Arm_2018_04_16" onclick="changeimg()" class="link"/></td></tr>*@
     </table>
 

@@ -8,18 +8,6 @@
     @Scripts.Render("~/bundles/modernizr")
 
 
-    @*<script type="text/javascript" id="logout">
-        function logout() {
-            firebase.auth().signOut().then(function () {
-                var url = '@Url.Action("NewLogin", "Home")';
-                window.location.href = url;
-                // Sign-out successful.
-            }).catch(function (error) {
-                // An error happened.
-            });
-        }
-    </script>*@
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -43,7 +31,7 @@
                 @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
                     <li><a href="javascript:void(0);" onclick="logout()">Log off</a></li>*@
-                    <li>@Html.ActionLink("Log Out", "Login", "Home")</li>
+                    <li>@Html.ActionLink("Log Out", "Login", "Home", new { onclick = "logout();" })</li>
                 </ul>
             </div>
         </div>
@@ -62,3 +50,12 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+    function logout() {
+        firebase.auth().signOut().then(function () {
+            console.log('Signed Out');
+        }, function (error) {
+            console.error('Sign Out Error', error);
+        });
+    }
+</script>
